@@ -5,11 +5,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
 public class FileEventWatcher {
 
+    private final List<Observer> observers = new ArrayList<>();
     private static WatchKey key;
 
     public FileEventWatcher(JavaPlugin plugin) {
@@ -28,11 +32,20 @@ public class FileEventWatcher {
                     continue;
                 }
                 String filename = event.context().toString();
-                ServerReloader.sendConsoleMessage("File: " + filename + ", " + "Event: " + kind);
+                //ServerReloader.sendConsoleMessage("File: " + filename + ", " + "Event: " + kind);
+                notifyObservers(new UpdatedFile(filename, kind));
             }
             key.reset();
         }, 20 * 3, 0);
     }
 
+    public void addObserver(Observer obs) {
+        observers.add(obs);
+    }
 
+    public void notifyObservers(UpdatedFile file) {
+        for (Observer obs : observers) {
+            obs.update(file);
+        }
+    }
 }
