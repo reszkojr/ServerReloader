@@ -9,8 +9,8 @@ public class ServerReloader extends JavaPlugin {
     @Override
     public void onEnable() {
         sendConsoleMessage(ChatColor.GREEN + "ServerReloader started.");
+        FileEventWatcher watcher = new FileEventWatcher(this);
     }
-
 
     @Override
     public void onDisable() {

@@ -1,0 +1,38 @@
+package me.santres.serverreloader;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.nio.file.*;
+
+import static java.nio.file.StandardWatchEventKinds.*;
+
+public class FileEventWatcher {
+
+    private static WatchKey key;
+
+    public FileEventWatcher(JavaPlugin plugin) {
+        try {
+            Path pluginsFolder = Paths.get(plugin.getDataFolder().getParent());
+            key = pluginsFolder.register(FileSystems.getDefault().newWatchService(), ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+        } catch (Exception e) {
+            ServerReloader.sendConsoleMessage(ChatColor.RED + "It was not possible to initialize ServerReloader!");
+            ServerReloader.sendConsoleMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            for (WatchEvent<?> event : key.pollEvents()) {
+                WatchEvent.Kind<?> kind = event.kind();
+                if (kind == OVERFLOW) {
+                    continue;
+                }
+                String filename = event.context().toString();
+                ServerReloader.sendConsoleMessage("File: " + filename + ", " + "Event: " + kind);
+            }
+            key.reset();
+        }, 20 * 3, 0);
+    }
+
+
+}
