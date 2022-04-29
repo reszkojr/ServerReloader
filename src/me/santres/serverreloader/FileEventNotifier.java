@@ -13,7 +13,7 @@ public class FileEventNotifier implements Observer {
 
     public FileEventNotifier(FileEventWatcher watcher) {
         watcher.addObserver(this);
-    }
+    }:wq
 
     @Override
     public void update(UpdatedFile file) {
