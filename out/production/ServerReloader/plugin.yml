@@ -1,0 +1,6 @@
+name: ServerReloader
+main: me.santres.serverreloader.ServerReloader
+author: Santres
+api-version: 1.18
+version: 1.0
+description: Reloads the server when a plugin get added, modified or deleted in the plugins folder.

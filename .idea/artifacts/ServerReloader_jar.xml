@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ServerReloader:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ServerReloader_jar</output-path>
+    <root id="archive" name="ServerReloader.jar">
+      <element id="module-output" name="ServerReloader" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Libs/spigot-1.18.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
